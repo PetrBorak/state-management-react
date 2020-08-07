@@ -2,13 +2,19 @@ import React from 'react';
 import './App.css';
 import { Route, Router } from 'react-router'
 import { createBrowserHistory } from 'history'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-import { Todos} from "./todosComponent/Todos";
+import { todosReducer } from './store/todos/todos'
+
+import Todos from "./todosComponent/Todos";
 
 function App() {
   return (
       <Router history={createBrowserHistory()}>
-        <Route path={'/'} component={Todos}></Route>
+          <Provider store={createStore(todosReducer)}>
+              <Route path={'/'} component={Todos}></Route>
+          </Provider>
       </Router>
   );
 }

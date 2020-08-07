@@ -1,16 +1,24 @@
-import React, { ReactDOM, useEffect, useState } from 'react'
-import { fetchTodos, getTodos } from "../backend/backend";
+import React, { useEffect, useCallback } from 'react'
+import { fetchTodos } from "../backend/backend";
+import {connect} from "react-redux";
+
+import { todosActionCreatorFetchSuccess, todosActionCreatorFetchError, todosActionCreatorFetchPending} from '../store/todos/todosActions'
 
 export const Todos = (props) => {
-    const [todos, setTodos] = useState([])
-    const filterSelection = (ev) => fetchTodos(ev.target.value).then((result) => {
-        setTodos(result)
-    });
-    useEffect(() => {
-        fetchTodos().then((result) => {
-            setTodos(result)
+    const { fetchTodosPending, fetchTodosSuccess, todos } = props;
+
+    const fetchAndStore = useCallback((param = '') => {
+        fetchTodosPending()
+        fetchTodos(param).then((result) => {
+            fetchTodosSuccess(result)
         })
-    }, []);
+    }, [fetchTodosSuccess, fetchTodosPending])
+
+    const filterSelection = (ev) => fetchAndStore(ev.target.value)
+
+    useEffect(() => {
+        fetchAndStore()
+    }, [fetchAndStore]);
 
     return (
         <div>
@@ -25,3 +33,18 @@ export const Todos = (props) => {
         </div>
     )
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    fetchTodosSuccess: (payload) => dispatch(todosActionCreatorFetchSuccess(payload)),
+    fetchTodosPending: () => dispatch(todosActionCreatorFetchPending()),
+    fetchTodosError: () => dispatch(todosActionCreatorFetchError()),
+})
+
+const mapStateToProps = (state) => {
+    debugger
+    return {
+        todos: state.todos
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todos)
