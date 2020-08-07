@@ -10,3 +10,8 @@ export const todosActionCreatorFetchError = () => ({
 export const todosActionCreatorFetchPending = () => ({
     type: 'FETCH_PENDING',
 })
+
+export const todosActionCreatorFetch = (param) => ({
+    type: 'FETCH_TODOS',
+    payload: param
+})
