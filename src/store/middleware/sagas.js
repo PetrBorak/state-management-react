@@ -2,11 +2,6 @@ import { call, delay, put, takeEvery } from 'redux-saga/effects'
 import { fetchTodos } from "../../backend/backend";
 import { todosActionCreatorFetchSuccess, todosActionCreatorFetchPending} from '../todos/todosActions'
 
-export function* incrementAsync() {
-    yield delay(1000)
-    yield put({type: 'INCREMENT'})
-}
-
 export function* fetchTodosSaga(action) {
     yield put(todosActionCreatorFetchPending());
     const result = yield call(fetchTodos, action.payload)
