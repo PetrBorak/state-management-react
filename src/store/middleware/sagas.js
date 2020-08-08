@@ -1,4 +1,4 @@
-import { call, delay, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import { fetchTodos } from "../../backend/backend";
 import { todosActionCreatorFetchSuccess, todosActionCreatorFetchPending} from '../todos/todosActions'
 

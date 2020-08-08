@@ -1,19 +1,21 @@
 import React, { useEffect, useCallback } from 'react'
 import {connect} from "react-redux";
-
+import { Link, useParams } from "react-router-dom";
 import { todosActionCreatorFetch } from '../store/todos/todosActions'
 
 export const Todos = (props) => {
-    const { todosActionCreatorFetch, todos } = props;
+    debugger;
+    const { todosActionCreatorFetch, todos, history } = props;
+    let { filter } = useParams();
 
     const fetchAndStore = useCallback((param = '') => {
         todosActionCreatorFetch(param)
-    }, [todosActionCreatorFetch])
+    }, [todosActionCreatorFetch, filter])
 
-    const filterSelection = (ev) => fetchAndStore(ev.target.value)
+    const filterSelection = (ev) => history.push(ev.target.value)
 
     useEffect(() => {
-        fetchAndStore()
+        fetchAndStore(filter)
     }, [fetchAndStore]);
 
     return (
@@ -36,7 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => {
     return {
-        todos: state.todos
+        todos: state.todos.data
     }
 }
 
